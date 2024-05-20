@@ -55,3 +55,139 @@ void printLevelWise(BinaryTreeNode<int> *root) {
 
 
 
+/************************************************************
+is node present?
+
+    Following is the Binary Tree node structure
+
+    template <typename T>
+    class BinaryTreeNode
+    {
+        public :
+        T data;
+        BinaryTreeNode<T> *left;
+        BinaryTreeNode<T> *right;
+
+        BinaryTreeNode(T data)
+        {
+            this -> data = data;
+            left = NULL;
+            right = NULL;
+        }
+    };
+
+************************************************************/
+bool isNodePresent(BinaryTreeNode<int> *root, int x) {
+    if (root == NULL) {
+        return false;
+    }
+
+    if (root->data == x) {
+        return true;
+    }
+
+    return isNodePresent(root->left, x) || isNodePresent(root->right, x);
+}
+
+
+/***********************************************************
+HEIGHT OF BINARY TREE
+	Following is the Binary Tree Node class structure
+
+	template <typename T>
+	class BinaryTreeNode {
+    	public : 
+    	T data;
+    	BinaryTreeNode<T> *left;
+    	BinaryTreeNode<T> *right;
+
+    	BinaryTreeNode(T data) {
+        	this -> data = data;
+        	left = NULL;
+        	right = NULL;
+    	}
+	};
+
+***********************************************************/
+int height(BinaryTreeNode<int>* root) {
+    if (root == NULL) {
+        return 0;
+    }
+
+    int leftHeight = height(root->left);
+    int rightHeight = height(root->right);
+
+    return max(leftHeight, rightHeight) + 1;
+}
+
+
+
+
+
+/**********************************************************
+MIRROR
+	Following is the Binary Tree Node class structure
+
+	template <typename T>
+	class BinaryTreeNode {
+    	public : 
+    	T data;
+    	BinaryTreeNode<T> *left;
+    	BinaryTreeNode<T> *right;
+
+    	BinaryTreeNode(T data) {
+        	this -> data = data;
+        	left = NULL;
+        	right = NULL;
+    	}
+	};
+
+***********************************************************/
+void mirrorBinaryTree(BinaryTreeNode<int>* root) {
+    if (root == NULL) {
+        return;
+    }
+
+    // Recursively update left and right subtrees
+    mirrorBinaryTree(root->left);
+    mirrorBinaryTree(root->right);
+
+    // Swap left and right subtrees
+    BinaryTreeNode<int>* temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+}
+
+void printLevelWise(BinaryTreeNode<int> *root) {
+    if (root == NULL) {
+        return;
+    }
+
+    queue<BinaryTreeNode<int>*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        int nodeCount = q.size();
+
+        while (nodeCount > 0) {
+            BinaryTreeNode<int>* front = q.front();
+            q.pop();
+
+            cout << front->data << " ";
+
+            if (front->left != NULL) {
+                q.push(front->left);
+            }
+            if (front->right != NULL) {
+                q.push(front->right);
+            }
+
+            nodeCount--;
+        }
+
+        cout << endl;
+    }
+}
+
+
+
