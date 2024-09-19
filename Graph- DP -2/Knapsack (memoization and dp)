@@ -1,0 +1,16 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int knapsack(int* weights, int* values, int n, int maxWeight) {
+    vector<int> dp(maxWeight + 1, 0);
+
+    for (int i = 0; i < n; i++) {
+        for (int w = maxWeight; w >= weights[i]; w--) {
+            dp[w] = max(dp[w], values[i] + dp[w - weights[i]]);
+        }
+    }
+
+    return dp[maxWeight];
+}
