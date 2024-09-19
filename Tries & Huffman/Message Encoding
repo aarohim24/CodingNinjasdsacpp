@@ -1,0 +1,127 @@
+Problem statement
+You are given an array 'ARR' of Integers having 'N' elements. The array contains an encoded message. For each index 'i', 'ARR[i]' denotes the frequency of the 'i'th' character in the message. The characters are of an alien language having 'N' alphabets. Given the frequency of each of the 'N' alphabets in the message, your task is to find out the Huffman codes for each of the 'N' alphabets in the message.
+
+The Huffman Code for a message is the set of codes such that :
+
+1) All codes are binary strings.
+2) Each code should be able to determine its corresponding character uniquely.
+3) The total numbers of bits used to represent the message are minimized.
+Note:
+
+If there are multiple sets of valid Huffman codes for a message. You can print any of them.
+For example:
+
+Consider the array ARR = [ 1, 4, 2 ] having 3 elements. 
+The array containing Huffman Codes for the above array will be [ '10', '0', '11' ]. Other Valid Huffman Codes are [ '01', '1', '00' ], [ '00', '1', '01' ] etc. Codes like [ '1', '0', '01' ], [ '1', '10' , '0' ] are some of the invalid Huffman Codes.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+1 <= T <= 10
+1 <= N <= 10^4
+1 <= ARR[i]  <= 10^4
+
+Where 'T' denotes the number of test cases, 'N' denotes the elements in the array 'ARR', and 'ARR[i]' denotes the 'i'th' element of the array 'ARR'.
+
+Time Limit: 1 sec
+Sample Input 1:
+2
+3
+5 7 6
+2
+4 3
+Sample Output 1:
+1
+1
+Explanation for Sample Input 1:
+For the first test case : 
+The array representing the Huffman codes will be [ '11', '0', '10' ] . Note that there are multiple other possible answers like [ '00', '1' ,'01' ], [ '01', '1', '00' ] etc. All of them are valid, so we can return any of them.
+
+For the second test case : 
+The array representing the Huffman codes will be [ '0', '1' ]. The array [ '1', '0' ] also represents a valid set of Huffman Code.
+Sample Input 2:
+2
+3
+1 2 5
+4
+5 6 3 1
+Sample Output 2:
+1
+1
+Explanation for Sample Input 2:
+For the first test case : 
+The array representing the Huffman codes will be [ '11', '10', '0' ] . 
+
+For the second test case : 
+The array representing the Huffman codes will be [ '10', '0', '110', '111' ]. 
+
+//code
+#include <iostream>
+#include <queue>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+class TreeNode {
+public:
+    int frequency;  // Frequency of the character
+    int index;      // Index of the character (for tracking the position in input array)
+    TreeNode* left; // Pointer to the left child
+    TreeNode* right;// Pointer to the right child
+
+    TreeNode(int freq, int idx) : frequency(freq), index(idx), left(NULL), right(NULL) {}
+};
+
+class Compare {
+public:
+    bool operator()(TreeNode* a, TreeNode* b) {
+        return a->frequency > b->frequency; 
+    }
+};
+
+void assignHuffmanCode(TreeNode* root, string str, vector<string>& ans) {
+    if (!root->left && !root->right) {
+        ans[root->index] = str;
+        return;
+    }
+
+    if (root->left) {
+        assignHuffmanCode(root->left, str + "0", ans);
+    }
+
+    if (root->right) {
+        assignHuffmanCode(root->right, str + "1", ans);
+    }
+}
+
+vector<string> huffmanCode(vector<int>& arr) {
+    int n = arr.size();
+
+    if (n == 1) {
+        return vector<string>(1, "1");
+    }
+
+    priority_queue<TreeNode*, vector<TreeNode*>, Compare> heap;
+
+    for (int i = 0; i < n; i++) {
+        heap.push(new TreeNode(arr[i], i)); 
+    }
+
+    while (heap.size() > 1) {
+        TreeNode* node1 = heap.top(); heap.pop();
+        TreeNode* node2 = heap.top(); heap.pop();
+
+        TreeNode* newNode = new TreeNode(node1->frequency + node2->frequency, -1);
+        newNode->left = node1;
+        newNode->right = node2;
+
+        heap.push(newNode);
+    }
+
+    TreeNode* root = heap.top();
+
+    vector<string> ans(n);
+
+    assignHuffmanCode(root, "", ans);
+
+    return ans;
+}
