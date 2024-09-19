@@ -1,0 +1,60 @@
+Problem statement
+Given an integer n, using phone keypad find out and print all the possible strings that can be made using digits of input n.
+
+
+
+
+
+Note :
+The order of strings are not important. Just print different strings in new lines.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+1 <= n <= 10^6
+
+Sample Input:
+23
+Sample Output:
+ad
+ae
+af
+bd
+be
+bf
+cd
+ce
+cf
+
+//code
+#include <iostream>
+#include <string>
+using namespace std;
+
+const string keypadMap[] = {
+    "",     
+    "",     
+    "abc",  
+    "def",  
+    "ghi",  
+    "jkl",  
+    "mno",  
+    "pqrs", 
+    "tuv",  
+    "wxyz"  
+};
+
+void generateCombinations(string num, string current, int index) {
+    if (index == num.length()) {
+        cout << current << endl;
+        return;
+    }
+
+    int digit = num[index] - '0';
+    string chars = keypadMap[digit];
+    for (int i = 0; i < chars.length(); ++i) {
+        generateCombinations(num, current + chars[i], index + 1);
+    }
+}
+void printKeypad(int num) {
+    string numStr = to_string(num);
+    generateCombinations(numStr, "", 0);
+}
