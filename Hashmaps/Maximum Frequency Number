@@ -1,0 +1,53 @@
+Problem statement
+You are given an array of integers that contain numbers in random order. Write a program to find and return the number which occurs the maximum times in the given input.
+
+If two or more elements are having the maximum frequency, return the element which occurs in the array first.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+0 <= N <= 10^8
+Time Limit: 1 sec
+Sample Input 1 :
+13
+2 12 2 11 12 2 1 2 2 11 12 2 6 
+Sample Output 1 :
+2
+Sample Input 2 :
+6
+7 2 2 4 8 4
+Sample Output 2 :
+2
+Explanation:
+Here, both element '2' and element '4' have same frequency but '2' ocurr first in orignal array that's why we are returning '2' as output. 
+
+//code
+#include <bits/stdc++.h>
+using namespace std;
+
+int highestFrequency(int arr[], int n) {
+    if (n == 0) return -1;
+
+    unordered_map<int, int> frequency;
+    unordered_map<int, int> first_occurrence;
+
+    int max_frequency = 0;
+    int element_with_max_frequency = arr[0];
+
+    for (int i = 0; i < n; ++i) {
+        int num = arr[i];
+        frequency[num]++;
+
+        if (first_occurrence.find(num) == first_occurrence.end()) {
+            first_occurrence[num] = i;
+        }
+        if (frequency[num] > max_frequency) {
+            max_frequency = frequency[num];
+            element_with_max_frequency = num;
+        } else if (frequency[num] == max_frequency) {           
+             if (first_occurrence[num] < first_occurrence[element_with_max_frequency]) {
+                element_with_max_frequency = num;
+            }
+        }
+    }
+    return element_with_max_frequency;
+}
