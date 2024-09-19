@@ -1,0 +1,76 @@
+Problem statement
+Given a NxM matrix containing Uppercase English Alphabets only. Your task is to tell if there is a path in the given matrix which makes the sentence “CODINGNINJA” .
+
+There is a path from any cell to all its neighbouring cells. For a particular cell, neighbouring cells are those cells that share an edge or a corner with the cell.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+1 <= N <= 1000
+1 <= M <= 1000
+Time Limit: 1 second
+Sample Input 1:
+2 11
+CXDXNXNXNXA
+XOXIXGXIXJX
+Sample Output 1:
+1
+
+//code
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+int dx[] = {-1, -1, -1, 0, 0, 1, 1, 1};
+int dy[] = {-1, 0, 1, -1, 1, -1, 0, 1};
+
+bool isValid(int x, int y, int n, int m) {
+    return x >= 0 && x < n && y >= 0 && y < m;
+}
+
+bool dfs(vector<vector<char>>& grid, int x, int y, string& word, int idx) {
+    if (idx == word.size()) {
+        return true;
+    }
+    if (grid[x][y] != word[idx]) {
+        return false;
+    }
+    char temp = grid[x][y];
+    grid[x][y] = '#';
+    for (int i = 0; i < 8; i++) {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+        if (isValid(nx, ny, grid.size(), grid[0].size()) && dfs(grid, nx, ny, word, idx + 1)) {
+            return true;
+        }
+    }
+    grid[x][y] = temp;
+    return false;
+}
+
+int main() {
+    int n, m;
+    cin >> n >> m;
+    vector<vector<char>> grid(n, vector<char>(m));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> grid[i][j];
+        }
+    }
+    string word = "CODINGNINJA";
+    bool found = false;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            if (dfs(grid, i, j, word, 0)) {
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            break;
+        }
+    }
+    cout << (found ? 1 : 0) << endl;
+    return 0;
+}
