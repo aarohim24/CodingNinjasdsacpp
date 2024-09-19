@@ -1,0 +1,19 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int knapsack(int *weights, int *values, int n, int maxWeight) {
+    vector<vector<int>> dp(n + 1, vector<int>(maxWeight + 1, 0));
+
+    for (int i = 1; i <= n; i++) {
+        for (int w = 1; w <= maxWeight; w++) {
+            if (weights[i - 1] > w) {
+                dp[i][w] = dp[i - 1][w];
+            } else {
+                dp[i][w] = max(dp[i - 1][w], values[i - 1] + dp[i - 1][w - weights[i - 1]]);
+            }
+        }
+    }
+
+    return dp[n][maxWeight];
+}
