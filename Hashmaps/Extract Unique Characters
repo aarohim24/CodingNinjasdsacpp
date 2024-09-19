@@ -1,0 +1,35 @@
+Problem statement
+Given a string S, you need to remove all the duplicates. That means, the output string should contain each character only once. The respective order of characters should remain same, as in the input string.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+0 <= Length of S <= 10^8
+Time Limit: 1 sec
+Sample Input 1 :
+ababacd
+Sample Output 1 :
+abcd
+Sample Input 2 :
+abcde
+Sample Output 2 :
+abcde
+
+//code
+#include <iostream>
+#include <unordered_set>
+
+using namespace std;
+
+string uniqueChar(string str) {
+    unordered_set<char> seen;
+    string result = "";
+
+    for (char c : str) {
+        if (seen.find(c) == seen.end()) {
+            seen.insert(c);
+            result += c;
+        }
+    }
+
+    return result;
+}
