@@ -1,0 +1,71 @@
+Problem statement
+Given a binary tree, check if it is balanced. Return true if given binary tree is balanced, false otherwise.
+
+Balanced Binary Tree:
+A empty binary tree or binary tree with zero nodes is always balanced. For a non empty binary tree to be balanced, following conditions must be met:
+1. The left and right subtrees must be balanced.
+2. |hL - hR| <= 1, where hL is the height or depth of left subtree and hR is the height or depth of right subtree.    
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints
+Time Limit: 1 second
+Sample Input 1 :
+5 6 10 2 3 -1 -1 -1 -1 -1 9 -1 -1
+Sample Output 1 :
+false
+Sample Input 2 :
+1 2 3 -1 -1 -1 -1
+Sample Output 2 :
+true
+
+//code
+/**********************************************************
+	Following is the Binary Tree Node class structure
+
+	template <typename T>
+	class BinaryTreeNode {
+    	public : 
+    	T data;
+    	BinaryTreeNode<T> *left;
+    	BinaryTreeNode<T> *right;
+
+    	BinaryTreeNode(T data) {
+        	this -> data = data;
+        	left = NULL;
+        	right = NULL;
+    	}
+	};
+
+***********************************************************/
+
+class BalancedStatusWithHeight {
+public:
+    bool balanced;
+    int height;
+    
+    BalancedStatusWithHeight(bool balanced, int height) : balanced(balanced), height(height) {}
+};
+
+BalancedStatusWithHeight checkBalanced(BinaryTreeNode<int> *root) {
+    if (root == nullptr) {
+        return BalancedStatusWithHeight(true, 0);
+    }
+
+    BalancedStatusWithHeight leftResult = checkBalanced(root->left);
+    if (!leftResult.balanced) {
+        return BalancedStatusWithHeight(false, 0);
+    }
+
+    BalancedStatusWithHeight rightResult = checkBalanced(root->right);
+    if (!rightResult.balanced) {
+        return BalancedStatusWithHeight(false, 0);
+    }
+
+    bool isBalanced = abs(leftResult.height - rightResult.height) <= 1;
+    int height = 1 + max(leftResult.height, rightResult.height);
+    
+    return BalancedStatusWithHeight(isBalanced, height);
+}
+
+bool isBalanced(BinaryTreeNode<int> *root) {
+    return checkBalanced(root).balanced;
+}
