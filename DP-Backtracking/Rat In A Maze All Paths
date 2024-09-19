@@ -1,0 +1,47 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void printSolution(const vector<int>& solution) {
+    for (int val : solution) {
+        cout << val << " ";
+    }
+    cout << endl;
+}
+
+void mazeHelp(vector<vector<int>>& maze, int n, vector<vector<int>>& solution, vector<vector<int>>& allSolutions, int x, int y) {
+    if (x == n - 1 && y == n - 1) {
+        solution[x][y] = 1;
+        vector<int> singleSolution;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                singleSolution.push_back(solution[i][j]);
+            }
+        }
+        allSolutions.push_back(singleSolution);
+        solution[x][y] = 0;
+        return;
+    }
+
+    if (x < 0 || x >= n || y < 0 || y >= n || maze[x][y] == 0 || solution[x][y] == 1)
+        return;
+
+    solution[x][y] = 1;
+
+    mazeHelp(maze, n, solution, allSolutions, x - 1, y); // Up
+    mazeHelp(maze, n, solution, allSolutions, x + 1, y); // Down
+    mazeHelp(maze, n, solution, allSolutions, x, y - 1); // Left
+    mazeHelp(maze, n, solution, allSolutions, x, y + 1); // Right
+
+    solution[x][y] = 0;
+}
+
+vector<vector<int>> ratInAMaze(vector<vector<int>>& maze, int n) {
+    vector<vector<int>> solution(n, vector<int>(n, 0));
+    vector<vector<int>> allSolutions;  // Store all valid solutions
+
+    // Start the maze solver from the top-left corner (0, 0)
+    mazeHelp(maze, n, solution, allSolutions, 0, 0);
+
+    return allSolutions;  // Return all possible solutions
+}
