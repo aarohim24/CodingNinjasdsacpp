@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+void combSumHelper(vector<int>& ARR, int B, int index, vector<int>& current, int currentSum, vector<vector<int>>& result) {
+    if (currentSum == B) {
+        result.push_back(current);
+        return;
+    }
+    
+    for (int i = index; i < ARR.size(); ++i) {
+        if (currentSum + ARR[i] <= B) {
+            current.push_back(ARR[i]);
+            combSumHelper(ARR, B, i, current, currentSum + ARR[i], result);
+            current.pop_back(); 
+        } else {
+            break; 
+        }
+    }
+}
+
+vector<vector<int>> combSum(vector<int>& ARR, int B) {
+    vector<vector<int>> result;
+    vector<int> current;
+    sort(ARR.begin(), ARR.end()); 
+    
+    combSumHelper(ARR, B, 0, current, 0, result);
+    
+    return result;
+}
+
