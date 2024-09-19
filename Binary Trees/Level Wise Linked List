@@ -1,0 +1,103 @@
+Problem statement
+Given a binary tree, write code to create a separate linked list for each level. You need to return the array which contains head of each level linked list.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+Time Limit: 1 second
+Sample Input 1:
+5 6 10 2 3 -1 -1 -1 -1 -1 9 -1 -1
+Sample Output 1:
+5 
+6 10 
+2 3 
+9
+
+//code
+/**********************************************************
+
+	Following are the Binary Tree Node class structure and
+	the Node class structure
+
+	template <typename T>
+	class BinaryTreeNode {
+    	public: 
+    	T data;
+    	BinaryTreeNode<T> *left;
+    	BinaryTreeNode<T> *right;
+
+    	BinaryTreeNode(T data) {
+        	this->data = data;
+        	left = NULL;
+        	right = NULL;
+    	}
+	};
+
+	template <typename T>
+	class Node {
+		public:
+    	T data;
+    	Node<T> *next;
+    	Node(T data) {
+        	this->data=data;
+        	this->next=NULL;
+    	}
+	};
+
+***********************************************************/
+
+
+vector<Node<int>*> constructLinkedListForEachLevel(BinaryTreeNode<int> *root) {
+    vector<Node<int>*> result;
+
+    if (root == NULL) {
+        return result;
+    }
+
+    queue<BinaryTreeNode<int>*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        int levelSize = q.size();
+        Node<int>* head = NULL;
+        Node<int>* tail = NULL;
+
+        for (int i = 0; i < levelSize; i++) {
+            BinaryTreeNode<int>* currentNode = q.front();
+            q.pop();
+
+            Node<int>* newNode = new Node<int>(currentNode->data);
+            if (head == NULL) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail->next = newNode;
+                tail = newNode;
+            }
+
+            if (currentNode->left != NULL) {
+                q.push(currentNode->left);
+            }
+            if (currentNode->right != NULL) {
+                q.push(currentNode->right);
+            }
+        }
+
+        result.push_back(head);
+    }
+
+    return result;
+}
+
+void printLevelLinkedLists(const vector<Node<int>*>& lists) {
+    for (Node<int>* head : lists) {
+        Node<int>* current = head;
+        while (current != NULL) {
+            cout << current->data;
+            if (current->next != NULL) {
+                cout << " ";
+            }
+            current = current->next;
+        }
+        cout << endl;
+    }
+}
