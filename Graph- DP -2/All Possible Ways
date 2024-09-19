@@ -1,0 +1,26 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+int countWays(int x, int n, int currNum, vector<vector<int>>& dp) {
+    if (x == 0) return 1;
+    
+    if (x < 0 || pow(currNum, n) > x) return 0;
+
+    if (dp[x][currNum] != -1) return dp[x][currNum];
+
+    int currPow = pow(currNum, n);
+    
+        int include = countWays(x - currPow, n, currNum + 1, dp);
+    
+    int exclude = countWays(x, n, currNum + 1, dp);
+
+    return dp[x][currNum] = include + exclude;
+}
+
+int getAllWays(int a, int b) {
+    int maxBase = pow(a, 1.0 / b); 
+    vector<vector<int>> dp(a + 1, vector<int>(maxBase + 2, -1)); 
+    return countWays(a, b, 1, dp);
+}
