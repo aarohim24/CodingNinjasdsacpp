@@ -1,0 +1,41 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+const int MOD = 1e9 + 7;
+
+vector<long long> countWaysToReachStep(int n) {
+    vector<long long> dp(n + 1, 0);
+    
+    dp[0] = 1; // 1 way to stay at the ground level (doing nothing)
+    if (n >= 1) dp[1] = 1; // 1 way to reach the first step
+    if (n >= 2) dp[2] = 2; // 2 ways to reach the second step (1+1 or 2)
+    
+    for (int i = 3; i <= n; i++) {
+        dp[i] = (dp[i-1] + dp[i-2] + dp[i-3]) % MOD;
+    }
+    
+    return dp;
+}
+
+int main() {
+    int T;
+    cin >> T;
+    vector<int> inputs(T);
+    int maxN = 0;
+    
+    for (int i = 0; i < T; i++) {
+        cin >> inputs[i];
+        if (inputs[i] > maxN) {
+            maxN = inputs[i];
+        }
+    }
+    
+    vector<long long> dp = countWaysToReachStep(maxN);
+    
+    for (int i = 0; i < T; i++) {
+        cout << dp[inputs[i]] << endl;
+    }
+    
+    return 0;
+}
