@@ -1,0 +1,51 @@
+Problem statement
+Given a string S, find and return all the possible permutations of the input string.
+
+Note 1 : The order of permutations is not important. Note 2 : If original string contains duplicate characters, permutations will also be duplicates.
+Detailed explanation ( Input/output format, Notes, Images )
+Sample Input :
+abc
+Sample Output :
+abc
+acb
+bac
+bca
+cab
+cba
+
+//code
+#include <iostream>
+#include <string>
+#include <unordered_set>
+#include <vector>
+
+using namespace std;
+void generatePermutations(const string& input, int index, string& current, vector<bool>& used, unordered_set<string>& result) {
+    if (index == input.size()) {
+        result.insert(current);
+        return;
+    }
+    for (int i = 0; i < input.size(); ++i) {
+        if (!used[i]) {
+            current[index] = input[i];
+            used[i] = true;
+            generatePermutations(input, index + 1, current, used, result);
+            used[i] = false;
+        }
+    }
+}
+int returnPermutations(const string& input, string output[]) {
+    unordered_set<string> result;
+    string current(input.size(), ' '); 
+    vector<bool> used(input.size(), false);
+    
+    generatePermutations(input, 0, current, used, result);
+    
+    int idx = 0;
+    for (const auto& perm : result) {
+        output[idx++] = perm;
+    }
+    
+    return result.size();
+}
+
