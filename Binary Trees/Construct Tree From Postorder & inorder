@@ -1,0 +1,69 @@
+Problem statement
+For a given postorder and inorder traversal of a Binary Tree of type integer stored in an array/list, create the binary tree using the given two arrays/lists. You just need to construct the tree and return the root.
+
+Note:
+Assume that the Binary Tree contains only unique elements. 
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+1 <= N <= 10^4
+Where N is the total number of nodes in the binary tree.
+
+Time Limit: 1 sec
+Sample Input 1:
+7
+4 5 2 6 7 3 1 
+4 2 5 1 6 3 7 
+Sample Output 1:
+1 
+2 3 
+4 5 6 7 
+Sample Input 2:
+6
+2 9 3 6 10 5 
+2 6 3 9 5 10 
+Sample Output 2:
+5 
+6 10 
+2 3 
+9 
+
+
+//code
+#include <iostream>
+#include <unordered_map>
+
+
+BinaryTreeNode<int>* buildTreeRecursive(int *postorder, int postStart, int postEnd, int *inorder, int inStart, int inEnd, std::unordered_map<int, int> &indexMap);
+
+BinaryTreeNode<int>* buildTree(int *postorder, int postLength, int *inorder, int inLength) {
+  std::unordered_map<int, int> indexMap;
+  for (int i = 0; i < inLength; i++) {
+    indexMap[inorder[i]] = i;
+  }
+
+  return buildTreeRecursive(postorder, 0, postLength - 1, inorder, 0, inLength - 1, indexMap);
+}
+
+BinaryTreeNode<int>* buildTreeRecursive(int *postorder, int postStart, int postEnd, int *inorder, int inStart, int inEnd, std::unordered_map<int, int> &indexMap) {
+  if (postStart > postEnd || inStart > inEnd) {
+    return NULL;
+  }
+
+  int rootValue = postorder[postEnd];
+
+  int rootIndex = indexMap[rootValue];
+
+  BinaryTreeNode<int> *root = new BinaryTreeNode<int>(rootValue);
+
+  int leftSubtreeLength = rootIndex - inStart;
+  int rightSubtreeLength = inEnd - rootIndex;
+
+  root->left = buildTreeRecursive(postorder, postStart, postStart + leftSubtreeLength - 1, inorder, inStart, rootIndex - 1, indexMap);
+  root->right = buildTreeRecursive(postorder, postStart + leftSubtreeLength, postEnd - 1, inorder, rootIndex + 1, inEnd, indexMap);
+
+  return root;
+}
+
+
+
+
