@@ -1,0 +1,65 @@
+Problem statement
+Given a BST and an integer k. Find and return the path from the node with data k and root (if a node with data k is present in given BST) in a list. Return empty list otherwise.
+
+Note: Assume that BST contains all unique elements.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+Time Limit: 1 second   
+Sample Input 1:
+8 5 10 2 6 -1 -1 -1 -1 -1 7 -1 -1
+2
+
+
+Sample Output 1:
+2 5 8
+
+//code
+/**********************************************************
+
+	Following is the Binary Tree Node class structure
+
+	template <typename T>
+	class BinaryTreeNode {
+    	public: 
+    	T data;
+    	BinaryTreeNode<T> *left;
+    	BinaryTreeNode<T> *right;
+
+    	BinaryTreeNode(T data) {
+        	this->data = data;
+        	left = NULL;
+        	right = NULL;
+    	}
+	};
+
+***********************************************************/
+
+vector<int>* findPath(BinaryTreeNode<int> *root, int data) {
+    if (root == nullptr || root->data == data) {
+        vector<int>* path = new vector<int>();
+        if (root != nullptr) {
+            path->push_back(root->data);
+        }
+        return path;
+    }
+
+    if (data < root->data) {
+        vector<int>* leftPath = findPath(root->left, data);
+        if (leftPath->size() > 0) {
+            leftPath->push_back(root->data);
+            return leftPath;
+        }
+    }
+    else {
+        vector<int>* rightPath = findPath(root->right, data);
+        if (rightPath->size() > 0) {
+            rightPath->push_back(root->data);
+            return rightPath;
+        }
+    }
+    return new vector<int>();
+}
+vector<int>* getPath(BinaryTreeNode<int> *root , int data) {
+    return findPath(root, data);
+}
