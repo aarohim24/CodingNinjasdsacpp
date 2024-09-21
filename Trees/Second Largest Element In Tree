@@ -1,0 +1,49 @@
+
+Problem statement
+Given a generic tree, find and return the node with second largest value in given tree.
+
+Note: Return NULL if no node with required value is present.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+Time Limit: 1 sec
+Sample Input 1 :
+10 3 20 30 40 2 40 50 0 0 0 0 
+Sample Output 1 :
+40
+
+//code
+#include <vector>
+#include <utility> // for pair
+
+pair<TreeNode<int>*, TreeNode<int>*> secondLargestHelper(TreeNode<int>* root, TreeNode<int>* largest, TreeNode<int>* secondLargest) {
+    if (root == nullptr)
+        return {largest, secondLargest};
+
+    if (root->data > largest->data) {
+        secondLargest = largest;
+        largest = root;
+    } else if (root->data != largest->data && (secondLargest == nullptr || root->data > secondLargest->data)) {
+        secondLargest = root;
+    }
+
+    for (int i = 0; i < root->children.size(); i++) {
+        pair<TreeNode<int>*, TreeNode<int>*> result = secondLargestHelper(root->children[i], largest, secondLargest);
+        largest = result.first;
+        secondLargest = result.second;
+    }
+
+    return {largest, secondLargest};
+}
+
+TreeNode<int>* getSecondLargestNode(TreeNode<int>* root) {
+    TreeNode<int>* largest = root;
+    TreeNode<int>* secondLargest = nullptr;
+
+    pair<TreeNode<int>*, TreeNode<int>*> result = secondLargestHelper(root, largest, secondLargest);
+    secondLargest = result.second;
+
+    return secondLargest;
+}
+
+
