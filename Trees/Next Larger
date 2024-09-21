@@ -1,0 +1,44 @@
+Problem statement
+Given a generic tree and an integer n. Find and return the node with next larger element in the tree i.e. find a node with value just greater than n.
+
+Note: Return NULL if no node is present with the value greater than n.
+
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+Time Limit: 1 sec
+Sample Input 1 :
+10 3 20 30 40 2 40 50 0 0 0 0 
+18
+Sample Output 1 :
+20
+Sample Input 2 :
+10 3 20 30 40 2 40 50 0 0 0 0 
+21
+Sample Output 2:
+30
+
+//code
+#include <vector>
+
+using namespace std;
+TreeNode<int>* getNextLargerElement(TreeNode<int>* root, int x, TreeNode<int>*& nextLarger) {
+    if (root == nullptr)
+        return nextLarger;
+
+    if (root->data > x) {
+        if (nextLarger == nullptr || root->data < nextLarger->data) {
+            nextLarger = root;
+        }
+    }
+
+    for (int i = 0; i < root->children.size(); i++) {
+        nextLarger = getNextLargerElement(root->children[i], x, nextLarger);
+    }
+
+    return nextLarger;
+}
+
+TreeNode<int>* getNextLargerElement(TreeNode<int>* root, int x) {
+    TreeNode<int>* nextLarger = nullptr;
+    return getNextLargerElement(root, x, nextLarger);
+}
