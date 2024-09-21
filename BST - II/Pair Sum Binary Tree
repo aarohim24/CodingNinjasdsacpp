@@ -1,0 +1,49 @@
+Problem statement
+Given a binary tree and an integer S, print all the pair of nodes whose sum equals S.
+
+Note:
+
+1. Assume the given binary tree contains all unique elements.
+2. In a pair, print the smaller element first. Order of different pairs doesn't matter.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints:
+Time Limit: 1 sec
+1 ≤ Number of Nodes ≤ 10^5
+1 ≤ S ≤ 10^6
+Sample Input 1:
+5 10 6 2 3 -1 -1 -1 -1 -1 9 -1 -1
+15
+
+
+Sample Output 1:
+5 10
+6 9
+
+//code
+#include <iostream>
+#include <unordered_set>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+void findPairsWithSum(BinaryTreeNode<int>* root, int S, unordered_set<int>& seen) {
+    if (root == nullptr) {
+        return;
+    }
+
+    int complement = S - root->data;
+    if (seen.find(complement) != seen.end()) {
+        cout << min(root->data, complement) << " " << max(root->data, complement) << endl;
+    }
+
+    seen.insert(root->data);
+    findPairsWithSum(root->left, S, seen);
+    findPairsWithSum(root->right, S, seen);
+}
+
+void pairSum(BinaryTreeNode<int>* root, int S) {
+    unordered_set<int> seen;
+    findPairsWithSum(root, S, seen);
+}
+
