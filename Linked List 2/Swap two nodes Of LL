@@ -1,0 +1,103 @@
+Problem statement
+You have been given a singly linked list of integers along with two integers, 'i,' and 'j.' Swap the nodes that are present at the 'i-th' and 'j-th' positions and return the new head to the list.
+
+Note :
+1. Remember, You need to swap the nodes, not only the data.
+2. Indexing starts from 0.
+3. No need to print the list, it has already been taken care.
+Detailed explanation ( Input/output format, Notes, Images )
+Constraints :
+1 <= t <= 10^2
+0 <= M <= 10^5
+Where M is the size of the singly linked list.
+0 <= i < M
+0 <= j < M
+
+Time Limit: 1sec
+Sample Input 1 :
+1
+3 4 5 2 6 1 9 -1
+3 4
+Sample Output 1 :
+3 4 5 6 2 1 9 
+ Sample Input 2 :
+2
+10 20 30 40 -1
+1 2
+70 80 90 25 65 85 90 -1
+0 6
+ Sample Output 2 :
+10 30 20 40 
+90 80 90 25 65 85 70 
+
+
+//code
+/****************************************************************
+ 
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+	        int data;
+	        Node *next;
+	        Node(int data)
+	        {
+		        this->data = data;
+		        this->next = NULL;
+	        }
+        };
+
+*****************************************************************/
+
+Node *swapNodes(Node *head, int i, int j) {
+    if (i == j) return head;
+
+    Node *prev_i = nullptr, *prev_j = nullptr;
+    Node *node_i = nullptr, *node_j = nullptr;
+    Node *current = head;
+
+    int pos = 0;
+    while (current != nullptr) {
+        if (pos == i - 1) prev_i = current;
+        if (pos == j - 1) prev_j = current;
+        if (pos == i) node_i = current;
+        if (pos == j) node_j = current;
+        current = current->next;
+        pos++;
+    }
+
+    if (node_i == nullptr || node_j == nullptr) return head;
+
+    if (prev_i == nullptr) head = node_j;
+    else prev_i->next = node_j;
+
+    if (prev_j == nullptr) head = node_i;
+    else prev_j->next = node_i;
+
+    if (node_i->next == node_j) {
+        Node *temp = node_j->next;
+        node_j->next = node_i;
+        node_i->next = temp;
+    } else if (node_j->next == node_i) {
+        Node *temp = node_i->next;
+        node_i->next = node_j;
+        node_j->next = temp;
+    } else {
+        Node *temp = node_i->next;
+        node_i->next = node_j->next;
+        node_j->next = temp;
+    }
+
+    return head;
+}
+
+void printList(Node *head) {
+    while (head != nullptr) {
+        cout << head->data << " ";
+        head = head->next;
+    }
+    cout << endl;
+}
+
+
