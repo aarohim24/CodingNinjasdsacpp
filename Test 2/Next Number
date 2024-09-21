@@ -1,0 +1,67 @@
+Problem statement
+Given a large number represented in the form of a linked list. Write code to increment the number by 1 in-place(i.e. without using extra space).
+
+Note: You don't need to print the elements, just update the elements and return the head of updated LL. Input Constraints:
+1 <= Length of Linked List <=10^6.
+Detailed explanation ( Input/output format, Notes, Images )
+Sample Input 1 :
+3 9 2 5 -1
+Sample Output 1 :
+3 9 2 6
+Sample Input 2 :
+9 9 9 -1
+Sample Output 1 :
+1 0 0 0 
+
+//code
+/**********
+ * Following is the Node class that is already written.
+ 
+class Node{
+public:
+    int data;
+    Node *next;
+    Node(int data){
+        this -> data = data;
+        this -> next = NULL;
+    }
+};
+ 
+*********/
+
+Node* NextLargeNumber(Node *head) {
+    Node *lastNon9Node = nullptr;
+    Node *curr=head;
+    Node *prev=nullptr;
+
+    while(curr != nullptr){
+        if (curr -> data <9)
+        lastNon9Node = curr;
+     prev = curr;
+     curr=curr->next;   
+    }
+
+if (lastNon9Node != nullptr){
+    lastNon9Node->data += 1;
+    curr=lastNon9Node->next;
+
+    while(curr != nullptr){
+        curr -> data =0;
+        curr = curr->next;
+    }
+}   else {
+    Node *newNode = new Node(1);
+    newNode->next = head;
+    head=newNode;
+
+    curr=head->next;
+    while(curr != nullptr){
+        curr->data = 0;
+        curr = curr->next;
+    }
+}
+return head;
+}
+
+
+
