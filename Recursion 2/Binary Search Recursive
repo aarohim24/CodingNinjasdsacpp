@@ -1,0 +1,41 @@
+Problem statement
+Given an integer sorted array (sorted in increasing order) and an element x, find the x in given array using binary search. Return the index of x.
+
+Return -1 if x is not present in the given array. Note : If given array size is even, take first mid.
+Input format :
+
+Line 1 : Array size
+
+Line 2 : Array elements (separated by space)
+
+Line 3 : x (element to be searched)
+
+Sample Input :
+6
+2 3 4 5 6 8 
+5 
+Sample Output:
+3 
+Hint : Use helper function to solve this question.
+
+//code
+#include <iostream>
+using namespace std;
+
+int binarySearch(int input[], int size, int element) {
+    int low = 0;
+    int high = size - 1;
+    
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        
+        if (input[mid] == element)
+            return mid;
+        else if (input[mid] < element)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    
+    return -1; // element not found
+}
