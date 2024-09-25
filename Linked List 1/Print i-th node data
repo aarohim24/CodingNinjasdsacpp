@@ -1,0 +1,64 @@
+Problem statement
+For a given a singly linked list of integers and a position 'i', print the node data at the 'i-th' position.
+
+ Note :
+Assume that the Indexing for the singly linked list always starts from 0.
+
+If the given position 'i',  is greater than the length of the given singly linked list, then don't print anything.
+Detailed explanation ( Input/output format, Notes, Images )
+ Constraints :
+1 <= t <= 10^2
+0 <= N <= 10^5
+i  >= 0
+Time Limit: 1sec
+Sample Input 1 :
+1
+3 4 5 2 6 1 9 -1
+3
+Sample Output 1 :
+2
+Sample Input 2 :
+2
+3 4 5 2 6 1 9 -1
+0
+9 8 4 0 7 8 -1
+3
+Sample Output 2 :
+3
+0
+
+}
+
+//code
+/****************************************************************
+ 
+    Following is the class structure of the Node class:
+
+        class Node
+        {
+        public:
+	        int data;
+	        Node *next;
+	        Node(int data)
+	        {
+		        this->data = data;
+		        this->next = NULL;
+	        }
+        };
+
+*****************************************************************/
+
+void printIthNode(Node *head, int i) {
+    int count = 0; // Initialize position counter to 0
+
+=    while (head != NULL) {
+        if (count == i) { // Check if the current position matches the desired position
+            cout << head->data << endl; // Print the data of the current node
+            return; // Exit the function after printing
+        }
+        head = head->next; // Move to the next node
+        count++; // Increment position counter
+    }
+
+
+}
